@@ -7,6 +7,8 @@ This project presents a comprehensive SQL-based analysis of Target's Brazilian e
 ---
 
 ### 📁 Dataset Overview
+https://drive.google.com/drive/folders/1TGEc66YKbD443nslRi1bWgVd238gJCnb  (Can download data from here)
+
 The analysis is based on multiple tables including:
 - `customers`
 - `orders`
