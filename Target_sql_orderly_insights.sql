@@ -1,5 +1,5 @@
 
-1.Data type of all columns in the "customers" table.
+#1.Data type of all columns in the "customers" table.
 SELECT
 column_name,
 data_type
@@ -8,7 +8,7 @@ FROM
 WHERE
 table_name = 'customers';
 
-2.Get the time range between which the orders were placed.
+#2.Get the time range between which the orders were placed.
 SELECT
 MIN(order_purchase_timestamp) AS earliest_order_time,
 MAX(order_purchase_timestamp) AS latest_order_time
@@ -16,7 +16,7 @@ FROM
 alert-outlet-348511.target.orders
 
 
-3. Count the Cities & States of customers who ordered during the given period.
+#3. Count the Cities & States of customers who ordered during the given period.
 SELECT
 count(distinct customer_city) as cnt_city,
 count(distinct customer_state) as cnt_state,
@@ -25,8 +25,8 @@ alert-outlet-348511.target.orders o
 join alert-outlet-348511.target.customers c on o.customer_id = c.customer_id
 
 
-In-depth Exploration:
-4.Is there a growing trend in the no. of orders placed over the past years?
+#In-depth Exploration:
+#4.Is there a growing trend in the no. of orders placed over the past years?
 SELECT
 EXTRACT(YEAR FROM order_purchase_timestamp) AS year,
 COUNT(*) AS total_orders
@@ -37,8 +37,7 @@ year
 ORDER BY
 year;
 
-5.Can we see some kind of monthly seasonality in terms of the no. of orders being
-placed?
+#5.Can we see some kind of monthly seasonality in terms of the no. of orders being placed?
 SELECT
 EXTRACT(MONTH FROM order_purchase_timestamp) AS order_month,
 COUNTIF(EXTRACT(YEAR FROM order_purchase_timestamp) = 2016) AS orders_2021,
@@ -52,7 +51,7 @@ ORDER BY
 order_month;
 
 
-6.During what time of the day, do the Brazilian customers mostly place their orders?
+#6.During what time of the day, do the Brazilian customers mostly place their orders?
 (Dawn, Morning, Afternoon or Night)
 SELECT
 CASE
@@ -70,8 +69,8 @@ time_of_day
 ORDER BY
 total_orders DESC;
 
-Evolution of E-commerce orders in the Brazil region:
-7.Get the month on month no. of orders placed in each state.
+#Evolution of E-commerce orders in the Brazil region:
+#7.Get the month on month no. of orders placed in each state.
 SELECT
 EXTRACT(MONTH FROM order_purchase_timestamp) AS order_month,
 customer_state,
@@ -84,7 +83,7 @@ order_month, customer_state
 ORDER BY
 order_month, total_orders DESC;
 
-8.How are the customers distributed across all the states?
+#8.How are the customers distributed across all the states?
 SELECT
 customer_state,
 COUNT(*) AS cnt_customers
@@ -96,9 +95,8 @@ ORDER BY
 2 desc
 
 
-Impact on Economy: Analyze the money movement by e-commerce by looking at
-order prices, freight and others.
-9.Get the % increase in the cost of orders from year 2017 to 2018 (include months
+#Impact on Economy: Analyze the money movement by e-commerce by looking at order prices, freight and others.
+#9.Get the % increase in the cost of orders from year 2017 to 2018 (include months
 between Jan to Aug only).You can use the "payment_value" column in the payments
 table to get the cost of orders.
 WITH payment_summary AS (
@@ -130,8 +128,8 @@ ROUND(((value_2018 - value_2017) / value_2017) * 100, 2) AS percent_increase
 FROM
 year_values;
 
-10.Calculate the Total & Average value of order price for each state.
-11.Calculate the Total & Average value of order freight for each state.
+#10.Calculate the Total & Average value of order price for each state.
+#11.Calculate the Total & Average value of order freight for each state.
 SELECT c.customer_state,round(sum(oi.price))as total_price,
 round(avg(oi.price))as avg_price,
 round(sum(oi.freight_value))as total_freight_value,
@@ -141,11 +139,9 @@ alert-outlet-348511.target.orders o on oi.order_id=o.order_id
 join alert-outlet-348511.target.customers c on c.customer_id= o.customer_id
 group by 1
 
-Analysis based on sales, freight and delivery time.
-12. Find the no. of days taken to deliver each order from the order’s purchase date as
-delivery time.
-Also, calculate the difference (in days) between the estimated & actual delivery
-date of an order.
+#Analysis based on sales, freight and delivery time.
+#12. Find the no. of days taken to deliver each order from the order’s purchase date as delivery time.
+#Also, calculate the difference (in days) between the estimated & actual delivery date of an order.
 SELECT
 order_id,
 customer_id,
@@ -158,7 +154,7 @@ alert-outlet-348511.target.orders
 
 
 
-13.Find out the top 5 states with the highest & lowest average freight value.
+#13.Find out the top 5 states with the highest & lowest average freight value.
 with afv as (
 SELECT c.customer_state,
 round(avg(oi.freight_value))as avg_freight_value
@@ -174,7 +170,7 @@ limit 5
 select customer_state, avg_freight_value from afv order by avg_freight_value limit 5
 
 
-14.Find out the top 5 states with the highest & lowest average delivery time.
+#14.Find out the top 5 states with the highest & lowest average delivery time.
 with delivery_time as
 (SELECT c.customer_state,
 avg(TIMESTAMP_DIFF(order_delivered_customer_date, order_purchase_timestamp, day)) AS
@@ -191,7 +187,7 @@ select * from delivery_time order by avg_time_to_delivery desc limit 5
 —lowest delivery time
 select * from delivery_time order by avg_time_to_delivery limit 5
 
-15.Find out the top 5 states where the order delivery is really fast as compared to the
+#15.Find out the top 5 states where the order delivery is really fast as compared to the
 estimated date of delivery.
 SELECT
  customer_state,
@@ -220,7 +216,7 @@ ORDER BY
 LIMIT 5;
 
 
-16.states with late delivery compared to estimated date
+#16.states with late delivery compared to estimated date
 SELECT
  customer_state,
  ROUND(AVG(estimated_delivery_time - actual_delivery_time), 2) AS
@@ -247,8 +243,8 @@ ORDER BY
  Delivery_time_difference
 LIMIT 5;
 
-Analysis based on the payments:
-17. Find the month on month no. of orders placed using different payment
+#Analysis based on the payments:
+#17. Find the month on month no. of orders placed using different payment
 types.
 SELECT
  month,
@@ -269,7 +265,7 @@ GROUP BY
 1,2
 
 
-18. Find the no. of orders placed on the basis of the payment installments that
+#18. Find the no. of orders placed on the basis of the payment installments that
 have been paid.
 SELECT
  payment_installments,
